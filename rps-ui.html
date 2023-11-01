@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Rock Paper Scissor !</title>
+</head>
+<body>
+    <div id="player">
+        <button id="choice" value="rock">Rock !</button>
+        <button id="choice" value="paper">Paper !</button>
+        <button id="choice" value="scissor">Scissor !</button>
+    </div>
+    <p id="score"></p>
+    <p id="log"></p>
+    
+    <div id="computer"></div>
+        <p></p>
+
+    <script>
+        let pscore = 0;
+        let cscore = 0;
+        function playRound(playerInput, ComputerInput) {
+            
+            if (playerInput === ComputerInput) {
+                console.log(`both pick ${playerInput}`)
+                return `Draw, both pick ${playerInput}`;
+            } else if (playerInput === "rock" && ComputerInput === "scissor" || playerInput === "scissor" && ComputerInput === "paper" || playerInput === "paper" && ComputerInput === "rock") {
+                pscore += 1
+                return `Player wins, 
+                (P) ${playerInput} beats (C) ${ComputerInput}`;
+                
+            } else {
+                cscore += 1;
+                return `Computer wins, 
+                (C) ${ComputerInput} beats (P) ${playerInput}`;
+            }
+        }
+        function game(playerInput) {
+            const choices = ["rock", "paper", "scissor"];
+            const ComputerInput = choices[Math.floor(Math.random() * 3)];
+            
+            return playRound(playerInput, ComputerInput)
+        }
+
+        function scoreGame() {
+            
+            if (pscore === 5){
+                gameOver();
+                para.textContent = "Congratulations the winner is PLAYER ! Game is Over";
+            } else if (cscore === 5){
+                gameOver();
+                para.textContent = "Congratulations the winner is COMPUTER ! Game is Over";
+            }
+        }
+
+        function gameOver () {
+            buttons.forEach(e => {
+                e.disabled = true;
+                }
+            )
+            reset.disabled = false;   
+        }
+
+        const div = document.querySelector("div");
+        const para = document.querySelector("#log");
+        const buttons = document.querySelectorAll("#choice");
+        score.textContent = `Player Score : ${pscore}
+            Computer Score :${cscore}`;
+        
+        const reset = document.createElement("button");
+        reset.value = "reset";
+        reset.textContent = "Reset the game";
+        reset.disabled = true;
+
+        div.appendChild(reset);
+
+        document.body.addEventListener('click', (e) => {
+            if (e.target.value === "reset") {
+                buttons.forEach(e => {
+                    e.disabled =false;
+                });
+                pscore = 0;
+                cscore = 0;
+                reset.disabled = "true";
+                log.textContent = ""
+            } else {
+            para.textContent = game(e.target.value); 
+            
+            }
+            score.textContent = `Player Score : ${pscore}
+                Computer Score : ${cscore}`;         
+                scoreGame();
+        })
+    
+    </script>
+</body>
+</html>
